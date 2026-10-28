@@ -20,7 +20,7 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 };
 
-export const WHATSAPP_DISPLAY = "49717504";
+export const WHATSAPP_DISPLAY = "+222 49 71 75 04";
 export const WHATSAPP_URL = "https://wa.me/22249717504"; // +222 = Mauritania
 export const EMAIL = "cheikhnahoui4@gmail.com";
 
