@@ -15,6 +15,8 @@ export const SITE = {
   title: "NAHOUI TECH | Web Development & Digital Solutions",
   description:
     "NAHOUI TECH delivers modern websites, web applications, software solutions, graphic design, video editing, social media management, and digital services.",
+  descriptionAr:
+    "تقدم NAHOUI TECH مواقع إلكترونية حديثة وتطبيقات ويب وحلولاً برمجية وتصميماً جرافيكياً ومونتاج فيديو وإدارة حسابات التواصل الاجتماعي وخدمات رقمية.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 };
 
