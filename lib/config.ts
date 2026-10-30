@@ -6,7 +6,7 @@
  * in .env.local. While empty, the Facebook button is shown as "not set yet"
  * and the footer link is hidden, so there is never a broken link.
  */
-export const FACEBOOK_PAGE_URL: string = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_URL ?? "";
+export const FACEBOOK_PAGE_URL: string = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_URL ?? "https://www.facebook.com/share/1EQNW2LJTX/?mibextid=wwXIfr";
 
 export const SITE = {
   name: "NAHOUI TECH",
