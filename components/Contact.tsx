@@ -15,8 +15,9 @@ export default function Contact() {
   const f = t.form;
   const [errors, setErrors] = useState<Errors>({});
   const [sentLink, setSentLink] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "received" | "limited">("idle");
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -30,17 +31,30 @@ export default function Contact() {
     if (message.length < 10) next.message = f.eMessage;
     setErrors(next);
     setSentLink(null);
+    setStatus("idle");
     if (Object.keys(next).length) {
       requestAnimationFrame(() => (form.querySelector("[aria-invalid='true']") as HTMLElement | null)?.focus());
       return;
     }
 
-    // No backend is configured, so inquiries are sent through WhatsApp.
     const service = svc === "other" ? f.other : t.services[Number(svc)].title;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, service, message, website: String(data.get("website") ?? "") }),
+      });
+      if (res.ok) { setStatus("received"); form.reset(); return; }
+      if (res.status === 429) { setStatus("limited"); return; }
+    } catch {}
+
+    // Storage unavailable: fall back to WhatsApp so the inquiry is never lost.
     const text = `${f.waHello}\n${f.waName}: ${name}\n${f.waEmail}: ${email}\n${f.waService}: ${service}\n\n${message}`;
     const link = whatsappLink(text);
     window.open(link, "_blank", "noopener,noreferrer");
     setSentLink(link);
+    setStatus("idle");
   }
 
   const err = (id: Key) => errors[id] && <p id={`${id}-error`} className="mt-1.5 text-sm text-red-400">{errors[id]}</p>;
@@ -106,11 +120,14 @@ export default function Contact() {
             <textarea id="message" name="message" rows={5} className={field} {...aria("message")} />
             {err("message")}
           </div>
-          <button type="submit" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 font-medium text-white transition-colors hover:bg-blue-500">
-            <Send size={18} aria-hidden="true" className="rtl:-scale-x-100" /> {f.send}
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+          <button type="submit" disabled={status === "sending"} className="mt-6 disabled:opacity-60 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 font-medium text-white transition-colors hover:bg-blue-500">
+            <Send size={18} aria-hidden="true" className="rtl:-scale-x-100" /> {status === "sending" ? f.sending : f.send}
           </button>
           <p className="mt-3 text-xs leading-relaxed text-slate-400">{f.note}</p>
           <div aria-live="polite">
+            {status === "received" && <p className="mt-4 rounded-lg border border-green-500/40 bg-green-500/10 p-3 text-sm leading-relaxed text-green-100">{f.received}</p>}
+            {status === "limited" && <p className="mt-4 rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm leading-relaxed text-yellow-100">{f.tooMany}</p>}
             {sentLink && (
               <p className="mt-4 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm leading-relaxed text-slate-100">
                 {f.sent}{" "}<a href={sentLink} target="_blank" rel="noopener noreferrer" className="font-medium text-glow underline">{f.sentLink}</a>.

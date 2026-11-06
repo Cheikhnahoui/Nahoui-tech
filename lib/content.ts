@@ -38,7 +38,9 @@ const ar = {
   form: {
     name: "الاسم الكامل", email: "البريد الإلكتروني", service: "الخدمة المطلوبة", select: "اختر خدمة", other: "أخرى",
     message: "الرسالة", send: "إرسال الرسالة",
-    note: "تُفتح رسالتك في واتساب جاهزة للإرسال، ولا تصل إلا بعد أن تضغط على إرسال هناك.",
+    note: "تصلنا رسالتك مباشرة. وإذا تعذّر الإرسال تُفتح في واتساب جاهزة للإرسال.",
+    sending: "جارٍ الإرسال…", received: "تم استلام رسالتك بنجاح. سنتواصل معك عبر بريدك الإلكتروني.",
+    tooMany: "أرسلت عدة رسائل خلال وقت قصير. حاول لاحقاً أو راسلنا عبر واتساب.",
     eName: "أدخل اسمك الكامل.", eEmail: "أدخل بريداً إلكترونياً صحيحاً مثل name@example.com.",
     eService: "اختر خدمة.", eMessage: "اكتب 10 أحرف على الأقل لنفهم طلبك.",
     sent: "يجب أن يكون واتساب قد فُتح الآن مع رسالتك. إذا لم يُفتح شيء،", sentLink: "افتح واتساب من هنا",
@@ -85,7 +87,9 @@ const en: typeof ar = {
   form: {
     name: "Full Name", email: "Email Address", service: "Service of Interest", select: "Select a service", other: "Other",
     message: "Message", send: "Send Message",
-    note: "Your message opens in WhatsApp, ready to send. It is delivered only after you press send there.",
+    note: "Your message is sent to us directly. If that is unavailable, it opens in WhatsApp, ready to send.",
+    sending: "Sending…", received: "Your message was received. We will contact you at the email you entered.",
+    tooMany: "You sent several messages in a short time. Try again later or message us on WhatsApp.",
     eName: "Enter your full name.", eEmail: "Enter a valid email address, like name@example.com.",
     eService: "Choose a service.", eMessage: "Write at least 10 characters so we understand your request.",
     sent: "WhatsApp should now be open with your message. If nothing opened,", sentLink: "open WhatsApp here",
